@@ -97,7 +97,7 @@ const SeatBooking = () => {
               </div>
               {bookingInfo.seats.length > 0 && (
                 <div className="mt-3 text-netflix-white font-medium">
-                  Total: ${bookingInfo.totalAmount.toFixed(2)}
+                  Total: ₹{bookingInfo.totalAmount.toFixed(2)}
                 </div>
               )}
             </div>
@@ -115,7 +115,7 @@ const SeatBooking = () => {
             {bookingInfo.seats.length > 0 ? (
               <>
                 <div className="text-sm text-netflix-white/70">Total Amount</div>
-                <div className="text-xl font-bold">${bookingInfo.totalAmount.toFixed(2)}</div>
+                <div className="text-xl font-bold">₹{bookingInfo.totalAmount.toFixed(2)}</div>
               </>
             ) : (
               <div>Select seats to proceed</div>

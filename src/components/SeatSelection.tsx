@@ -73,7 +73,7 @@ const SeatSelection: React.FC<SeatSelectionProps> = ({ seats, rowsPerSection = 5
                       }`}
                       onClick={() => handleSeatClick(seat)}
                       disabled={status === 'booked'}
-                      title={`${row}${seat.number} - $${seat.price.toFixed(2)}`}
+                      title={`${row}${seat.number} - ₹${seat.price.toFixed(2)}`}
                     >
                       <span className="text-xs">{seat.number}</span>
                     </button>

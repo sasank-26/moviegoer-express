@@ -1,3 +1,4 @@
+
 export interface Movie {
   id: string;
   title: string;
@@ -124,7 +125,7 @@ export const movies: Movie[] = [
   {
     id: '5',
     title: 'The Avengers',
-    posterUrl: 'https://images.unsplash.com/photo-1635863138275-d9b33299680d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YXZlbmdlcnN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60',
+    posterUrl: 'https://images.unsplash.com/photo-1541535650810-10d26f5c2ab3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHN1cGVyaGVyb3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
     backdropUrl: 'https://images.unsplash.com/photo-1563089145-599997674d42?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
     releaseYear: 2012,
     runtime: 143,
@@ -158,6 +159,44 @@ export const movies: Movie[] = [
       { name: 'Cho Yeo-jeong', role: 'Choi Yeon-gyo', imageUrl: 'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d29tYW4lMjBwb3J0cmFpdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60' },
     ],
     director: 'Bong Joon Ho'
+  },
+  {
+    id: '7',
+    title: 'RRR',
+    posterUrl: 'https://images.unsplash.com/photo-1605462863863-10d9e47e15ee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MzN8fGluZGlhbnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
+    backdropUrl: 'https://images.unsplash.com/photo-1528124623032-309be347893a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1024&q=80',
+    releaseYear: 2022,
+    runtime: 187,
+    genre: ['Action', 'Drama', 'History'],
+    rating: 8.7,
+    language: 'Telugu',
+    certificate: 'UA',
+    description: 'A fictional story about two legendary revolutionaries and their journey away from home before they started fighting for their country in the 1920s.',
+    cast: [
+      { name: 'Ram Charan', role: 'Alluri Sitarama Raju', imageUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cG9ydHJhaXQlMjBtYW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60' },
+      { name: 'Jr NTR', role: 'Komaram Bheem', imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8cG9ydHJhaXQlMjBtYW58ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60' },
+      { name: 'Alia Bhatt', role: 'Sita', imageUrl: 'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d29tYW4lMjBwb3J0cmFpdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60' },
+    ],
+    director: 'S.S. Rajamouli'
+  },
+  {
+    id: '8',
+    title: 'Oppenheimer',
+    posterUrl: 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxzZWFyY2h8MTV8fGV4cGxvc2lvbnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
+    backdropUrl: 'https://images.unsplash.com/photo-1606025530216-9b21f19e1b77?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80',
+    releaseYear: 2023,
+    runtime: 180,
+    genre: ['Biography', 'Drama', 'History'],
+    rating: 8.4,
+    language: 'English',
+    certificate: 'R',
+    description: 'The story of American scientist J. Robert Oppenheimer and his role in the development of the atomic bomb.',
+    cast: [
+      { name: 'Cillian Murphy', role: 'J. Robert Oppenheimer', imageUrl: 'https://images.unsplash.com/photo-1504257432389-52343af06ae3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTd8fHBvcnRyYWl0JTIwbWFufGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60' },
+      { name: 'Emily Blunt', role: 'Katherine Oppenheimer', imageUrl: 'https://images.unsplash.com/photo-1534751516642-a1af1ef26a56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d29tYW4lMjBwb3J0cmFpdHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60' },
+      { name: 'Matt Damon', role: 'Leslie Groves', imageUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHBvcnRyYWl0JTIwbWFufGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60' },
+    ],
+    director: 'Christopher Nolan'
   }
 ];
 
@@ -174,10 +213,10 @@ export const theaters: Theater[] = [
     rating: 4.5,
     reviews: 1245,
     showTimes: [
-      { time: '10:30 AM', price: 399, seatsAvailable: true },
-      { time: '1:45 PM', price: 499, seatsAvailable: true },
-      { time: '4:30 PM', price: 599, seatsAvailable: true },
-      { time: '8:00 PM', price: 699, seatsAvailable: true },
+      { time: '10:30 AM', price: 599, seatsAvailable: true },
+      { time: '1:45 PM', price: 699, seatsAvailable: true },
+      { time: '4:30 PM', price: 799, seatsAvailable: true },
+      { time: '8:00 PM', price: 899, seatsAvailable: true },
     ]
   },
   {
@@ -191,10 +230,10 @@ export const theaters: Theater[] = [
     rating: 4.2,
     reviews: 987,
     showTimes: [
-      { time: '11:15 AM', price: 399, seatsAvailable: true },
-      { time: '2:30 PM', price: 499, seatsAvailable: true },
-      { time: '5:45 PM', price: 599, seatsAvailable: true },
-      { time: '9:00 PM', price: 699, seatsAvailable: true },
+      { time: '11:15 AM', price: 599, seatsAvailable: true },
+      { time: '2:30 PM', price: 699, seatsAvailable: true },
+      { time: '5:45 PM', price: 799, seatsAvailable: true },
+      { time: '9:00 PM', price: 899, seatsAvailable: true },
     ]
   },
   {
@@ -208,10 +247,10 @@ export const theaters: Theater[] = [
     rating: 4.7,
     reviews: 1578,
     showTimes: [
-      { time: '10:00 AM', price: 449, seatsAvailable: true },
-      { time: '1:00 PM', price: 549, seatsAvailable: true },
-      { time: '4:15 PM', price: 649, seatsAvailable: true },
-      { time: '7:30 PM', price: 749, seatsAvailable: true },
+      { time: '10:00 AM', price: 649, seatsAvailable: true },
+      { time: '1:00 PM', price: 749, seatsAvailable: true },
+      { time: '4:15 PM', price: 849, seatsAvailable: true },
+      { time: '7:30 PM', price: 949, seatsAvailable: true },
     ]
   }
 ];
@@ -230,7 +269,7 @@ export const generateSeats = (rowCount: number, seatsPerRow: number): Seat[] => 
         row,
         number: j,
         status: randomStatus,
-        price: i < 3 ? 12.99 : 9.99,
+        price: i < 3 ? 499.99 : 399.99, // Increased prices by approximately 200 rupees
       });
     }
   }

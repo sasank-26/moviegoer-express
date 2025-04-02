@@ -196,7 +196,7 @@ const TheaterSelection = () => {
                         {time}
                       </div>
                       <div className="text-sm text-netflix-white/70">
-                        ${price.toFixed(2)}
+                        ₹{price.toFixed(0)}
                       </div>
                     </button>
                   ))}
