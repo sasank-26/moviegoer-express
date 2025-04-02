@@ -16,8 +16,8 @@ const SeatBooking = () => {
   
   const movie = movies.find(m => m.id === id);
   
-  // Generate theater seats
-  const seats = React.useMemo(() => generateSeats(8, 12), []);
+  // Generate theater seats with higher base price (200 rupees minimum)
+  const seats = React.useMemo(() => generateSeats(8, 12, 200), []);
   
   if (!movie || !bookingInfo.theater || !bookingInfo.date || !bookingInfo.showTime) {
     return (
@@ -97,7 +97,7 @@ const SeatBooking = () => {
               </div>
               {bookingInfo.seats.length > 0 && (
                 <div className="mt-3 text-netflix-white font-medium">
-                  Total: ₹{bookingInfo.totalAmount.toFixed(2)}
+                  Total: ₹{bookingInfo.totalAmount.toFixed(0)}
                 </div>
               )}
             </div>
@@ -115,7 +115,7 @@ const SeatBooking = () => {
             {bookingInfo.seats.length > 0 ? (
               <>
                 <div className="text-sm text-netflix-white/70">Total Amount</div>
-                <div className="text-xl font-bold">₹{bookingInfo.totalAmount.toFixed(2)}</div>
+                <div className="text-xl font-bold">₹{bookingInfo.totalAmount.toFixed(0)}</div>
               </>
             ) : (
               <div>Select seats to proceed</div>

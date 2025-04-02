@@ -2,6 +2,8 @@
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 import { Movie, Theater, Seat } from '../lib/data';
 import { toast } from 'sonner';
+import { useAuth } from './AuthContext';
+import { format } from 'date-fns';
 
 interface BookingInfo {
   movie: Movie | null;
@@ -39,6 +41,7 @@ const initialBookingState: BookingInfo = {
 
 export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [bookingInfo, setBookingInfo] = useState<BookingInfo>(initialBookingState);
+  const { user } = useAuth();
 
   const setMovie = (movie: Movie | null) => {
     setBookingInfo(prev => ({ ...prev, movie }));
@@ -93,6 +96,36 @@ export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children })
     setBookingInfo(initialBookingState);
   };
 
+  const saveTicketToLocalStorage = (bookingId: string, bookingDate: Date, amount: number) => {
+    if (!user || !bookingInfo.movie || !bookingInfo.theater || 
+        !bookingInfo.date || !bookingInfo.showTime || 
+        bookingInfo.seats.length === 0) {
+      return;
+    }
+
+    // Get existing tickets or create empty array
+    const storedTickets = localStorage.getItem(`movieapp_tickets_${user.id}`);
+    const tickets = storedTickets ? JSON.parse(storedTickets) : [];
+    
+    // Create new ticket
+    const newTicket = {
+      id: bookingId,
+      movieTitle: bookingInfo.movie.title,
+      posterUrl: bookingInfo.movie.posterUrl,
+      theater: bookingInfo.theater.name,
+      date: bookingInfo.date,
+      time: bookingInfo.showTime,
+      seats: bookingInfo.seats.map(s => `${s.row}${s.number}`),
+      amount: amount
+    };
+    
+    // Add new ticket to tickets array
+    tickets.unshift(newTicket); // Add to beginning of array
+    
+    // Save back to localStorage
+    localStorage.setItem(`movieapp_tickets_${user.id}`, JSON.stringify(tickets));
+  };
+
   const completeBooking = async (): Promise<boolean> => {
     try {
       // In a real app, this would be an API call to reserve seats
@@ -108,12 +141,21 @@ export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children })
 
       // Generate a unique booking ID
       const bookingId = `BMS${Math.floor(100000 + Math.random() * 900000)}`;
+      const bookingDate = new Date();
+      
+      // Calculate final amount (including convenience fee and tax)
+      const convenienceFee = 49;
+      const tax = Math.round(bookingInfo.totalAmount * 0.18);
+      const finalAmount = bookingInfo.totalAmount + convenienceFee + tax;
+      
+      // Save ticket to localStorage
+      saveTicketToLocalStorage(bookingId, bookingDate, finalAmount);
       
       // Update booking info with ID and booking date
       setBookingInfo(prev => ({
         ...prev,
         bookingId,
-        bookingDate: new Date()
+        bookingDate
       }));
 
       toast.success('Booking completed successfully!');
