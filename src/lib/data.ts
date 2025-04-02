@@ -1,4 +1,3 @@
-
 export interface Movie {
   id: string;
   title: string;
@@ -24,6 +23,11 @@ export interface Theater {
   name: string;
   location: string;
   distance: string;
+  imageUrl: string;
+  type: string;
+  phone: string;
+  rating: number;
+  reviews: number;
   showTimes: {
     time: string;
     price: number;
@@ -164,11 +168,16 @@ export const theaters: Theater[] = [
     name: 'Cinema City',
     location: 'Downtown Center Mall',
     distance: '2.5 km',
+    imageUrl: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Y2luZW1hfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
+    type: 'IMAX & 4DX',
+    phone: '+91 98765 43210',
+    rating: 4.5,
+    reviews: 1245,
     showTimes: [
-      { time: '10:30 AM', price: 8.99, seatsAvailable: true },
-      { time: '1:45 PM', price: 9.99, seatsAvailable: true },
-      { time: '4:30 PM', price: 10.99, seatsAvailable: true },
-      { time: '8:00 PM', price: 12.99, seatsAvailable: true },
+      { time: '10:30 AM', price: 399, seatsAvailable: true },
+      { time: '1:45 PM', price: 499, seatsAvailable: true },
+      { time: '4:30 PM', price: 599, seatsAvailable: true },
+      { time: '8:00 PM', price: 699, seatsAvailable: true },
     ]
   },
   {
@@ -176,11 +185,16 @@ export const theaters: Theater[] = [
     name: 'MovieMax Multiplex',
     location: 'West Side Shopping Complex',
     distance: '4.8 km',
+    imageUrl: 'https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8Y2luZW1hfGVufDB8fDB8fHww&auto=format&fit=crop&w=500&q=60',
+    type: 'Dolby Atmos',
+    phone: '+91 98765 43211',
+    rating: 4.2,
+    reviews: 987,
     showTimes: [
-      { time: '11:15 AM', price: 8.99, seatsAvailable: true },
-      { time: '2:30 PM', price: 9.99, seatsAvailable: true },
-      { time: '5:45 PM', price: 10.99, seatsAvailable: true },
-      { time: '9:00 PM', price: 12.99, seatsAvailable: true },
+      { time: '11:15 AM', price: 399, seatsAvailable: true },
+      { time: '2:30 PM', price: 499, seatsAvailable: true },
+      { time: '5:45 PM', price: 599, seatsAvailable: true },
+      { time: '9:00 PM', price: 699, seatsAvailable: true },
     ]
   },
   {
@@ -188,11 +202,16 @@ export const theaters: Theater[] = [
     name: 'Royal Cinema',
     location: 'North Plaza',
     distance: '3.2 km',
+    imageUrl: 'https://images.unsplash.com/photo-1594909122845-11baa439b7bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGNpbmVtYXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60',
+    type: 'Standard & VIP',
+    phone: '+91 98765 43212',
+    rating: 4.7,
+    reviews: 1578,
     showTimes: [
-      { time: '10:00 AM', price: 9.99, seatsAvailable: true },
-      { time: '1:00 PM', price: 10.99, seatsAvailable: true },
-      { time: '4:15 PM', price: 11.99, seatsAvailable: true },
-      { time: '7:30 PM', price: 13.99, seatsAvailable: true },
+      { time: '10:00 AM', price: 449, seatsAvailable: true },
+      { time: '1:00 PM', price: 549, seatsAvailable: true },
+      { time: '4:15 PM', price: 649, seatsAvailable: true },
+      { time: '7:30 PM', price: 749, seatsAvailable: true },
     ]
   }
 ];
