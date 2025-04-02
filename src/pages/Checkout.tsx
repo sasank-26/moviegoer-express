@@ -7,13 +7,14 @@ import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
 import { useBooking } from '@/context/BookingContext';
 import { useAuth } from '@/context/AuthContext';
-import { toast } from 'sonner';
+import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 
 const Checkout = () => {
   const navigate = useNavigate();
   const { bookingInfo, completeBooking } = useBooking();
   const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   
   if (!bookingInfo.movie || !bookingInfo.theater || !bookingInfo.seats.length || !bookingInfo.date || !bookingInfo.showTime) {
     return (
@@ -39,11 +40,15 @@ const Checkout = () => {
     try {
       const success = await completeBooking();
       if (success) {
-        navigate('/booking-confirmation');
+        setShowConfirmation(true);
       }
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleConfirmation = () => {
+    navigate('/booking-confirmation');
   };
 
   const totalAmount = bookingInfo.totalAmount;
@@ -156,6 +161,36 @@ const Checkout = () => {
           </div>
         </div>
       </div>
+
+      <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
+        <AlertDialogContent className="bg-netflix-gray text-netflix-white border-netflix-light-gray">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-netflix-white">Payment Successful!</AlertDialogTitle>
+            <AlertDialogDescription className="text-netflix-white/80">
+              Your booking has been confirmed. You can view your ticket details now.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="p-4 bg-netflix-light-gray/20 rounded-md my-4 text-center">
+            <h3 className="text-netflix-white mb-2">{bookingInfo.movie?.title}</h3>
+            <p className="text-sm text-netflix-white/70">{format(new Date(bookingInfo.date!), 'dd MMM yyyy')} • {bookingInfo.showTime}</p>
+            <p className="text-sm text-netflix-white/70">{bookingInfo.theater?.name}</p>
+            <p className="text-sm font-medium text-netflix-white mt-2">
+              {bookingInfo.seats.length} Seat(s): {bookingInfo.seats.map(s => `${s.row}${s.number}`).join(', ')}
+            </p>
+            <p className="text-sm font-medium text-netflix-red mt-2">
+              Total Amount: ₹{finalAmount}
+            </p>
+          </div>
+          <AlertDialogFooter>
+            <AlertDialogAction 
+              className="bg-netflix-red hover:bg-netflix-dark-red text-white" 
+              onClick={handleConfirmation}
+            >
+              View Ticket Details
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

@@ -10,6 +10,8 @@ interface BookingInfo {
   date: string | null;
   seats: Seat[];
   totalAmount: number;
+  bookingId?: string;
+  bookingDate?: Date;
 }
 
 interface BookingContextType {
@@ -104,8 +106,17 @@ export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children })
         return false;
       }
 
+      // Generate a unique booking ID
+      const bookingId = `BMS${Math.floor(100000 + Math.random() * 900000)}`;
+      
+      // Update booking info with ID and booking date
+      setBookingInfo(prev => ({
+        ...prev,
+        bookingId,
+        bookingDate: new Date()
+      }));
+
       toast.success('Booking completed successfully!');
-      clearBooking();
       return true;
     } catch (error) {
       toast.error('Booking failed. Please try again.');
