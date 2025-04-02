@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Star, Clock, Film, User, Calendar, ChevronLeft, Ticket } from 'lucide-react';
+import { Star, Clock, Film, User, Calendar, ChevronLeft, Ticket, Play } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { movies } from '@/lib/data';
 import { useBooking } from '@/context/BookingContext';
 
@@ -11,6 +12,7 @@ const MovieDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { setMovie } = useBooking();
+  const [trailerOpen, setTrailerOpen] = useState(false);
   
   const movie = movies.find(m => m.id === id);
   
@@ -35,6 +37,22 @@ const MovieDetails = () => {
   const handleBookTickets = () => {
     setMovie(movie);
     navigate(`/theater-selection/${movie.id}`);
+  };
+
+  // Sample trailer URLs based on movie title
+  const getTrailerUrl = (movieTitle) => {
+    const trailerMap = {
+      "Avengers: Endgame": "https://www.youtube.com/embed/TcMBFSGVi1c",
+      "Joker": "https://www.youtube.com/embed/zAGVQLHvwOY",
+      "The Lion King": "https://www.youtube.com/embed/7TavVZMewpY",
+      "Parasite": "https://www.youtube.com/embed/5xH0HfJHsaY",
+      "1917": "https://www.youtube.com/embed/YqNYrYUiMfg",
+      "Tenet": "https://www.youtube.com/embed/LdOM0x0XDMo",
+      "Black Widow": "https://www.youtube.com/embed/ybji16u608U",
+      "No Time to Die": "https://www.youtube.com/embed/BIhNsAtPbPI"
+    };
+    
+    return trailerMap[movieTitle] || "https://www.youtube.com/embed/dQw4w9WgXcQ"; // Default trailer
   };
 
   return (
@@ -67,11 +85,19 @@ const MovieDetails = () => {
         <div className="flex flex-col md:flex-row gap-6">
           {/* Movie Poster */}
           <div className="md:w-1/3 lg:w-1/4">
-            <img 
-              src={movie.posterUrl} 
-              alt={movie.title}
-              className="w-full rounded-xl shadow-xl md:max-w-xs mx-auto"
-            />
+            <div className="relative">
+              <img 
+                src={movie.posterUrl} 
+                alt={movie.title}
+                className="w-full rounded-xl shadow-xl md:max-w-xs mx-auto"
+              />
+              <Button
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-netflix-red/80 hover:bg-netflix-red rounded-full w-16 h-16 flex items-center justify-center"
+                onClick={() => setTrailerOpen(true)}
+              >
+                <Play fill="white" size={28} />
+              </Button>
+            </div>
           </div>
           
           {/* Movie Info */}
@@ -148,7 +174,7 @@ const MovieDetails = () => {
               </div>
             </div>
             
-            <div className="mt-8">
+            <div className="mt-8 flex flex-wrap gap-4">
               <Button
                 className="bg-netflix-red hover:bg-netflix-dark-red text-white text-lg py-6 px-8"
                 onClick={handleBookTickets}
@@ -156,10 +182,34 @@ const MovieDetails = () => {
                 <Ticket className="mr-2" size={20} />
                 Book Tickets
               </Button>
+              
+              <Button
+                variant="outline" 
+                className="border-netflix-white text-netflix-white hover:bg-netflix-white/10"
+                onClick={() => setTrailerOpen(true)}
+              >
+                <Play size={18} className="mr-2" />
+                Watch Trailer
+              </Button>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Trailer Dialog */}
+      <Dialog open={trailerOpen} onOpenChange={setTrailerOpen}>
+        <DialogContent className="max-w-4xl bg-netflix-black border-netflix-light-gray p-0">
+          <div className="relative pt-[56.25%] w-full">
+            <iframe 
+              src={getTrailerUrl(movie.title)}
+              className="absolute top-0 left-0 w-full h-full"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              title={`${movie.title} Trailer`}
+            ></iframe>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

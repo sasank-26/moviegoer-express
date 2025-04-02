@@ -42,7 +42,11 @@ const Index = () => {
       <section className="container mx-auto px-4 py-10">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Coming Soon</h2>
-          <Button variant="ghost" className="text-netflix-white hover:text-netflix-red">
+          <Button 
+            variant="ghost" 
+            className="text-netflix-white hover:text-netflix-red"
+            onClick={() => navigate('/movies')}
+          >
             View All <ArrowRight size={16} className="ml-1" />
           </Button>
         </div>

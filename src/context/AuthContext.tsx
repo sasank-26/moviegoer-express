@@ -20,6 +20,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [registeredUsers, setRegisteredUsers] = useState<{email: string, password: string, name: string}[]>([]);
 
   // Check if we have a user in localStorage on mount
   React.useEffect(() => {
@@ -32,15 +33,31 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         localStorage.removeItem('movieapp_user');
       }
     }
+    
+    const storedUsers = localStorage.getItem('movieapp_registered_users');
+    if (storedUsers) {
+      try {
+        setRegisteredUsers(JSON.parse(storedUsers));
+      } catch (error) {
+        console.error('Failed to parse registered users:', error);
+      }
+    }
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
-      // In a real app, this would be an API call
-      // Simulating API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Check if user has registered
+      const registeredUser = registeredUsers.find(u => u.email === email && u.password === password);
       
-      // Mock validation
+      if (registeredUser) {
+        const loggedInUser = { id: Date.now().toString(), name: registeredUser.name, email };
+        setUser(loggedInUser);
+        localStorage.setItem('movieapp_user', JSON.stringify(loggedInUser));
+        toast.success('Welcome back!');
+        return;
+      }
+      
+      // Fallback to default user for demo purposes
       if (email === 'user@example.com' && password === 'password') {
         const loggedInUser = { id: '123', name: 'John Doe', email };
         setUser(loggedInUser);
@@ -58,13 +75,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const register = async (name: string, email: string, password: string) => {
     try {
-      // In a real app, this would be an API call
-      // Simulating API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Check if user already exists
+      if (registeredUsers.some(u => u.email === email)) {
+        toast.error('User with this email already exists');
+        return;
+      }
       
+      // Add to registered users
+      const newRegisteredUsers = [...registeredUsers, { name, email, password }];
+      setRegisteredUsers(newRegisteredUsers);
+      localStorage.setItem('movieapp_registered_users', JSON.stringify(newRegisteredUsers));
+      
+      // Auto login after registration
       const newUser = { id: Date.now().toString(), name, email };
       setUser(newUser);
       localStorage.setItem('movieapp_user', JSON.stringify(newUser));
+      
       toast.success('Registration successful!');
     } catch (error) {
       toast.error('Registration failed. Please try again.');
