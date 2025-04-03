@@ -4,6 +4,8 @@ import { Movie, Theater, Seat } from '../lib/data';
 import { toast } from 'sonner';
 import { useAuth } from './AuthContext';
 import { format } from 'date-fns';
+import { supabase } from '@/lib/supabase';
+import { v4 as uuidv4 } from 'uuid';
 
 interface BookingInfo {
   movie: Movie | null;
@@ -96,40 +98,50 @@ export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children })
     setBookingInfo(initialBookingState);
   };
 
-  const saveTicketToLocalStorage = (bookingId: string, bookingDate: Date, amount: number) => {
+  const saveBookingToSupabase = async (
+    bookingId: string, 
+    amount: number, 
+    convenienceFee: number,
+    tax: number
+  ) => {
     if (!user || !bookingInfo.movie || !bookingInfo.theater || 
         !bookingInfo.date || !bookingInfo.showTime || 
         bookingInfo.seats.length === 0) {
-      return;
+      return false;
     }
 
-    // Get existing tickets or create empty array
-    const storedTickets = localStorage.getItem(`movieapp_tickets_${user.id}`);
-    const tickets = storedTickets ? JSON.parse(storedTickets) : [];
-    
-    // Create new ticket
-    const newTicket = {
-      id: bookingId,
-      movieTitle: bookingInfo.movie.title,
-      posterUrl: bookingInfo.movie.posterUrl,
-      theater: bookingInfo.theater.name,
-      date: bookingInfo.date,
-      time: bookingInfo.showTime,
-      seats: bookingInfo.seats.map(s => `${s.row}${s.number}`),
-      amount: amount
-    };
-    
-    // Add new ticket to tickets array
-    tickets.unshift(newTicket); // Add to beginning of array
-    
-    // Save back to localStorage
-    localStorage.setItem(`movieapp_tickets_${user.id}`, JSON.stringify(tickets));
+    try {
+      // Save booking to Supabase
+      const { error } = await supabase.from('bookings').insert({
+        id: bookingId,
+        user_id: user.id,
+        movie_id: bookingInfo.movie.id,
+        theater_id: bookingInfo.theater.id,
+        movie_title: bookingInfo.movie.title,
+        theater_name: bookingInfo.theater.name,
+        poster_url: bookingInfo.movie.posterUrl,
+        show_date: bookingInfo.date,
+        show_time: bookingInfo.showTime,
+        seats: bookingInfo.seats.map(s => `${s.row}${s.number}`),
+        amount: amount,
+        convenience_fee: convenienceFee,
+        tax: tax,
+        total_amount: amount + convenienceFee + tax,
+        created_at: new Date().toISOString()
+      });
+      
+      if (error) throw error;
+      return true;
+    } catch (error) {
+      console.error('Error saving booking:', error);
+      return false;
+    }
   };
 
   const completeBooking = async (): Promise<boolean> => {
     try {
       // In a real app, this would be an API call to reserve seats
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Validate booking has all required info
       if (!bookingInfo.movie || !bookingInfo.theater || 
@@ -139,8 +151,13 @@ export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children })
         return false;
       }
 
+      if (!user) {
+        toast.error('You must be logged in to complete a booking');
+        return false;
+      }
+
       // Generate a unique booking ID
-      const bookingId = `BMS${Math.floor(100000 + Math.random() * 900000)}`;
+      const bookingId = `BMS${uuidv4().substring(0, 8)}`;
       const bookingDate = new Date();
       
       // Calculate final amount (including convenience fee and tax)
@@ -148,8 +165,18 @@ export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children })
       const tax = Math.round(bookingInfo.totalAmount * 0.18);
       const finalAmount = bookingInfo.totalAmount + convenienceFee + tax;
       
-      // Save ticket to localStorage
-      saveTicketToLocalStorage(bookingId, bookingDate, finalAmount);
+      // Save booking to Supabase
+      const success = await saveBookingToSupabase(
+        bookingId,
+        bookingInfo.totalAmount, 
+        convenienceFee,
+        tax
+      );
+      
+      if (!success) {
+        toast.error('Failed to save booking. Please try again.');
+        return false;
+      }
       
       // Update booking info with ID and booking date
       setBookingInfo(prev => ({
@@ -157,6 +184,12 @@ export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children })
         bookingId,
         bookingDate
       }));
+
+      // Send an email confirmation (this would be handled by a Supabase Edge Function in production)
+      // In this demo we'll just simulate it
+      setTimeout(() => {
+        toast.success('Booking confirmation email sent!');
+      }, 2000);
 
       toast.success('Booking completed successfully!');
       return true;

@@ -1,107 +1,133 @@
 
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import { toast } from 'sonner';
+import { supabase } from '@/lib/supabase';
+import { Session, User } from '@supabase/supabase-js';
 
-interface User {
+interface AuthUser {
   id: string;
   name: string;
   email: string;
 }
 
 interface AuthContextType {
-  user: User | null;
+  user: AuthUser | null;
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [registeredUsers, setRegisteredUsers] = useState<{email: string, password: string, name: string}[]>([]);
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [session, setSession] = useState<Session | null>(null);
 
-  // Check if we have a user in localStorage on mount
-  React.useEffect(() => {
-    const storedUser = localStorage.getItem('movieapp_user');
-    if (storedUser) {
-      try {
-        setUser(JSON.parse(storedUser));
-      } catch (error) {
-        console.error('Failed to parse user from localStorage:', error);
-        localStorage.removeItem('movieapp_user');
+  // Initialize the auth state from Supabase session
+  useEffect(() => {
+    const initAuth = async () => {
+      const { data } = await supabase.auth.getSession();
+      setSession(data.session);
+      
+      if (data.session?.user) {
+        const { data: profile } = await supabase
+          .from('user_profiles')
+          .select('name')
+          .eq('id', data.session.user.id)
+          .single();
+
+        setUser({
+          id: data.session.user.id,
+          name: profile?.name || data.session.user.email?.split('@')[0] || 'User',
+          email: data.session.user.email || '',
+        });
       }
-    }
+    };
     
-    const storedUsers = localStorage.getItem('movieapp_registered_users');
-    if (storedUsers) {
-      try {
-        setRegisteredUsers(JSON.parse(storedUsers));
-      } catch (error) {
-        console.error('Failed to parse registered users:', error);
+    initAuth();
+    
+    // Set up auth state change listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (event, newSession) => {
+        setSession(newSession);
+        
+        if (event === 'SIGNED_IN' && newSession?.user) {
+          const { data: profile } = await supabase
+            .from('user_profiles')
+            .select('name')
+            .eq('id', newSession.user.id)
+            .single();
+            
+          setUser({
+            id: newSession.user.id,
+            name: profile?.name || newSession.user.email?.split('@')[0] || 'User',
+            email: newSession.user.email || '',
+          });
+          toast.success('Welcome back!');
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
+          toast.info('You have been logged out');
+        }
       }
-    }
+    );
+    
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const login = async (email: string, password: string) => {
     try {
-      // Check if user has registered
-      const registeredUser = registeredUsers.find(u => u.email === email && u.password === password);
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
       
-      if (registeredUser) {
-        const loggedInUser = { id: Date.now().toString(), name: registeredUser.name, email };
-        setUser(loggedInUser);
-        localStorage.setItem('movieapp_user', JSON.stringify(loggedInUser));
-        toast.success('Welcome back!');
-        return;
-      }
-      
-      // Fallback to default user for demo purposes
-      if (email === 'user@example.com' && password === 'password') {
-        const loggedInUser = { id: '123', name: 'John Doe', email };
-        setUser(loggedInUser);
-        localStorage.setItem('movieapp_user', JSON.stringify(loggedInUser));
-        toast.success('Welcome back!');
-        return;
-      }
-      
-      toast.error('Invalid email or password');
-    } catch (error) {
-      toast.error('Login failed. Please try again.');
+      if (error) throw error;
+    } catch (error: any) {
+      toast.error(error.message || 'Login failed. Please try again.');
       console.error('Login error:', error);
     }
   };
 
   const register = async (name: string, email: string, password: string) => {
     try {
-      // Check if user already exists
-      if (registeredUsers.some(u => u.email === email)) {
-        toast.error('User with this email already exists');
-        return;
+      const { data: { user: newUser }, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+          },
+        },
+      });
+      
+      if (error) throw error;
+      
+      if (newUser) {
+        // Create a profile entry for the user
+        await supabase.from('user_profiles').insert({
+          id: newUser.id,
+          name,
+          email,
+        });
+        
+        toast.success('Registration successful!');
       }
-      
-      // Add to registered users
-      const newRegisteredUsers = [...registeredUsers, { name, email, password }];
-      setRegisteredUsers(newRegisteredUsers);
-      localStorage.setItem('movieapp_registered_users', JSON.stringify(newRegisteredUsers));
-      
-      // Auto login after registration
-      const newUser = { id: Date.now().toString(), name, email };
-      setUser(newUser);
-      localStorage.setItem('movieapp_user', JSON.stringify(newUser));
-      
-      toast.success('Registration successful!');
-    } catch (error) {
-      toast.error('Registration failed. Please try again.');
+    } catch (error: any) {
+      toast.error(error.message || 'Registration failed. Please try again.');
       console.error('Registration error:', error);
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('movieapp_user');
-    toast.info('You have been logged out');
+  const logout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   return (

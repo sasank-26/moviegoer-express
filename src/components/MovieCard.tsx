@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Star, Clock } from 'lucide-react';
 import { Movie } from '../lib/data';
+import { supabase } from '@/lib/supabase';
 
 interface MovieCardProps {
   movie: Movie;
@@ -11,6 +12,29 @@ interface MovieCardProps {
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie, isLarge = false }) => {
   const navigate = useNavigate();
+  const [imageUrl, setImageUrl] = React.useState<string>(movie.posterUrl);
+  
+  // If the image is stored in Supabase storage, we'll get an optimized version
+  React.useEffect(() => {
+    const loadImage = async () => {
+      if (movie.posterUrl.includes('supabase.co')) {
+        try {
+          // Get optimized image from Supabase storage
+          const { data: imageUrl } = supabase.storage
+            .from('movie-posters')
+            .getPublicUrl(movie.posterUrl.split('/').pop() || '');
+            
+          if (imageUrl?.publicUrl) {
+            setImageUrl(imageUrl.publicUrl);
+          }
+        } catch (error) {
+          console.error('Error loading image:', error);
+        }
+      }
+    };
+    
+    loadImage();
+  }, [movie.posterUrl]);
 
   return (
     <div 
@@ -18,7 +42,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isLarge = false }) => {
       onClick={() => navigate(`/movie/${movie.id}`)}
     >
       <img
-        src={movie.posterUrl}
+        src={imageUrl}
         alt={movie.title}
         className="rounded-md"
         loading="lazy"

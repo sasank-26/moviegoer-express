@@ -3,6 +3,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Star, Clock } from 'lucide-react';
 import { Movie } from '@/lib/data';
+import { supabase } from '@/lib/supabase';
 
 interface SearchResultsProps {
   results: Movie[];
@@ -12,6 +13,36 @@ interface SearchResultsProps {
 
 const SearchResults: React.FC<SearchResultsProps> = ({ results, onClose, query }) => {
   const navigate = useNavigate();
+  const [imageUrls, setImageUrls] = React.useState<Record<string, string>>({});
+  
+  React.useEffect(() => {
+    // Load optimized images for search results
+    const loadImages = async () => {
+      const newImageUrls: Record<string, string> = {};
+      
+      for (const movie of results) {
+        if (movie.posterUrl.includes('supabase.co')) {
+          try {
+            const { data: imageUrl } = supabase.storage
+              .from('movie-posters')
+              .getPublicUrl(movie.posterUrl.split('/').pop() || '');
+              
+            if (imageUrl?.publicUrl) {
+              newImageUrls[movie.id] = imageUrl.publicUrl;
+            }
+          } catch (error) {
+            console.error('Error loading image:', error);
+          }
+        }
+      }
+      
+      setImageUrls(newImageUrls);
+    };
+    
+    if (results.length > 0) {
+      loadImages();
+    }
+  }, [results]);
   
   if (query.length < 2) return null;
   
@@ -30,7 +61,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ results, onClose, query }
             onClick={() => handleMovieClick(movie)}
           >
             <img
-              src={movie.posterUrl}
+              src={imageUrls[movie.id] || movie.posterUrl}
               alt={movie.title}
               className="w-12 h-16 object-cover rounded mr-3"
             />
