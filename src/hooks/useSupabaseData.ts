@@ -38,13 +38,15 @@ export function useSupabaseData<T>(
           });
         }
         
-        const { data, error } = await query;
+        const { data: responseData, error } = await query;
         
         if (error) throw error;
         
-        setData(data || []);
+        // Type assertion to ensure the response data matches the generic type
+        setData(responseData as T[] || []);
       } catch (err) {
-        setError(err instanceof Error ? err : new Error('An unknown error occurred'));
+        const errorObject = err instanceof Error ? err : new Error('An unknown error occurred');
+        setError(errorObject);
         console.error('Error fetching data:', err);
       } finally {
         setLoading(false);
