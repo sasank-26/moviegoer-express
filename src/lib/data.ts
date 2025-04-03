@@ -1,4 +1,3 @@
-
 import { v4 as uuidv4 } from 'uuid';
 
 export interface Movie {
@@ -9,12 +8,17 @@ export interface Movie {
   backdropUrl: string;
   rating: number;
   releaseDate: string;
+  releaseYear: number;
   runtime: number;
   language: string;
   certificate: string;
   genres: string[];
   director: string;
-  cast: string[];
+  cast: {
+    name: string;
+    role: string;
+    imageUrl: string;
+  }[];
   featured?: boolean;
 }
 
@@ -22,12 +26,17 @@ export interface Theater {
   id: string;
   name: string;
   location: string;
-  showTimes: string[];
+  showTimes: {
+    time: string;
+    price: number;
+    seatsAvailable: boolean;
+  }[];
   imageUrl: string;
   type: string;
   phone: string;
   rating: number;
   reviews: number;
+  distance?: string;
 }
 
 export interface Seat {
@@ -48,12 +57,19 @@ export const movies: Movie[] = [
     backdropUrl: 'https://wallpapers.com/images/hd/avengers-endgame-desktop-ypu9hbdctag6quxi.jpg',
     rating: 8.4,
     releaseDate: '2019-04-26',
+    releaseYear: 2019,
     runtime: 181,
     language: 'English',
     certificate: 'PG-13',
     genres: ['Action', 'Adventure', 'Drama', 'Sci-Fi'],
     director: 'Anthony Russo, Joe Russo',
-    cast: ['Robert Downey Jr.', 'Chris Evans', 'Mark Ruffalo', 'Chris Hemsworth', 'Scarlett Johansson'],
+    cast: [
+      { name: 'Robert Downey Jr.', role: 'Tony Stark / Iron Man', imageUrl: 'https://m.media-amazon.com/images/M/MV5BNzg1MTUyNDYxOF5BMl5BanBnXkFtZTgwNTQ4MTE2MjE@._V1_.jpg' },
+      { name: 'Chris Evans', role: 'Steve Rogers / Captain America', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTU2NTg1OTQzMF5BMl5BanBnXkFtZTcwNjIyMjkyMg@@._V1_.jpg' },
+      { name: 'Mark Ruffalo', role: 'Bruce Banner / Hulk', imageUrl: 'https://m.media-amazon.com/images/M/MV5BNWIzZTI1ODUtZTUzMC00NTdiLWFlOTYtZTg4MGZkYmU4YzNlXkEyXkFqcGdeQXVyNTExOTk5Nzg@._V1_.jpg' },
+      { name: 'Chris Hemsworth', role: 'Thor', imageUrl: 'https://m.media-amazon.com/images/M/MV5BOTU2MTI0NTIyNV5BMl5BanBnXkFtZTcwMTA4Nzc3OA@@._V1_.jpg' },
+      { name: 'Scarlett Johansson', role: 'Natasha Romanoff / Black Widow', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTM3OTUwMDYwNl5BMl5BanBnXkFtZTcwNTUyNzc3Nw@@._V1_.jpg' }
+    ],
     featured: true
   },
   {
@@ -64,12 +80,17 @@ export const movies: Movie[] = [
     backdropUrl: 'https://wallpaperaccess.com/full/1837200.jpg',
     rating: 8.4,
     releaseDate: '2019-10-02',
+    releaseYear: 2019,
     runtime: 122,
     language: 'English',
     certificate: 'R',
     genres: ['Crime', 'Drama', 'Thriller'],
     director: 'Todd Phillips',
-    cast: ['Joaquin Phoenix', 'Robert De Niro', 'Zazie Beetz'],
+    cast: [
+      { name: 'Joaquin Phoenix', role: 'Arthur Fleck / Joker', imageUrl: 'https://m.media-amazon.com/images/M/MV5BZGMyY2Q4NTEtMWVkZS00NzcwLTkzNmQtYzBlMWZhZGNhMDhkXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_.jpg' },
+      { name: 'Robert De Niro', role: 'Murray Franklin', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjAwNDU3MzcyOV5BMl5BanBnXkFtZTcwMjc0MTIxMw@@._V1_.jpg' },
+      { name: 'Zazie Beetz', role: 'Sophie Dumond', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMGUzZjY2ZmMtMWY5YS00Y2RlLWJlMmItMmU4YzA0YzQyNDMwXkEyXkFqcGdeQXVyMjQwMDg0Ng@@._V1_.jpg' }
+    ],
     featured: true
   },
   {
@@ -80,6 +101,7 @@ export const movies: Movie[] = [
     backdropUrl: 'https://wallpapercave.com/wp/wp2162756.jpg',
     rating: 9.0,
     releaseDate: '2008-07-18',
+    releaseYear: 2008,
     runtime: 152,
     language: 'English',
     certificate: 'PG-13',
@@ -96,6 +118,7 @@ export const movies: Movie[] = [
     backdropUrl: 'https://wallpapercave.com/wp/wp1994783.jpg',
     rating: 8.5,
     releaseDate: '1994-06-24',
+    releaseYear: 1994,
     runtime: 88,
     language: 'English',
     certificate: 'G',
@@ -112,6 +135,7 @@ export const movies: Movie[] = [
     backdropUrl: 'https://wallpapercave.com/wp/wp1917154.jpg',
     rating: 8.8,
     releaseDate: '2010-07-16',
+    releaseYear: 2010,
     runtime: 148,
     language: 'English',
     certificate: 'PG-13',
@@ -128,6 +152,7 @@ export const movies: Movie[] = [
     backdropUrl: 'https://wallpapercave.com/wp/wp1817941.jpg',
     rating: 8.6,
     releaseDate: '2014-11-07',
+    releaseYear: 2014,
     runtime: 169,
     language: 'English',
     certificate: 'PG-13',
@@ -144,6 +169,7 @@ export const movies: Movie[] = [
     backdropUrl: 'https://images.indianexpress.com/2022/03/RRR-movie-review-1200.jpg',
     rating: 7.8,
     releaseDate: '2022-03-24',
+    releaseYear: 2022,
     runtime: 187,
     language: 'Telugu',
     certificate: 'PG-13',
@@ -160,6 +186,7 @@ export const movies: Movie[] = [
     backdropUrl: 'https://images.hdqwalls.com/wallpapers/dune-2021-movie-4k-d6.jpg',
     rating: 8.0,
     releaseDate: '2021-10-22',
+    releaseYear: 2021,
     runtime: 155,
     language: 'English',
     certificate: 'PG-13',
@@ -176,6 +203,7 @@ export const movies: Movie[] = [
     backdropUrl: 'https://wallpapercave.com/wp/wp5294666.jpg',
     rating: 8.5,
     releaseDate: '2019-11-08',
+    releaseYear: 2019,
     runtime: 132,
     language: 'Korean',
     certificate: 'R',
@@ -192,6 +220,7 @@ export const movies: Movie[] = [
     backdropUrl: 'https://wallpapercave.com/wp/wp11254898.jpg',
     rating: 8.3,
     releaseDate: '2022-05-27',
+    releaseYear: 2022,
     runtime: 130,
     language: 'English',
     certificate: 'PG-13',
@@ -208,29 +237,49 @@ export const theaters: Theater[] = [
     id: 't1',
     name: 'PVR Cinemas',
     location: 'Phoenix Mall, Mumbai',
-    showTimes: ['09:00', '12:30', '15:45', '19:00', '22:15'],
+    showTimes: [
+      { time: '09:00', price: 250, seatsAvailable: true },
+      { time: '12:30', price: 300, seatsAvailable: true },
+      { time: '15:45', price: 300, seatsAvailable: true },
+      { time: '19:00', price: 350, seatsAvailable: true },
+      { time: '22:15', price: 350, seatsAvailable: true }
+    ],
     imageUrl: 'https://content.jdmagicbox.com/comp/mumbai/47/022p8700447/catalogue/pvr-cinemas-phoenix-marketcity-mall-kurla-west-mumbai-cinema-halls-nc6z82l.jpg',
     type: 'Multiplex',
     phone: '+91 22 6180 1234',
     rating: 4.5,
-    reviews: 3245
+    reviews: 3245,
+    distance: '2.5 km'
   },
   {
     id: 't2',
     name: 'INOX Leisure',
     location: 'Nariman Point, Mumbai',
-    showTimes: ['10:15', '13:45', '17:00', '20:30', '23:00'],
+    showTimes: [
+      { time: '10:15', price: 280, seatsAvailable: true },
+      { time: '13:45', price: 320, seatsAvailable: true },
+      { time: '17:00', price: 320, seatsAvailable: false },
+      { time: '20:30', price: 380, seatsAvailable: true },
+      { time: '23:00', price: 380, seatsAvailable: true }
+    ],
     imageUrl: 'https://content3.jdmagicbox.com/comp/kolkata/g3/033pxx33.xx33.180308132131.g4g3/catalogue/inox-quest-mall-ballygunge-kolkata-cinema-halls-3zq3hgq-250.jpg',
     type: 'Luxury Cinema',
     phone: '+91 22 6643 8765',
     rating: 4.7,
-    reviews: 2178
+    reviews: 2178,
+    distance: '3.8 km'
   },
   {
     id: 't3',
     name: 'Cinepolis',
     location: 'Andheri West, Mumbai',
-    showTimes: ['09:30', '12:00', '14:30', '18:15', '21:45'],
+    showTimes: [
+      { time: '09:30', price: 250, seatsAvailable: true },
+      { time: '12:00', price: 300, seatsAvailable: true },
+      { time: '14:30', price: 300, seatsAvailable: true },
+      { time: '18:15', price: 350, seatsAvailable: true },
+      { time: '21:45', price: 350, seatsAvailable: true }
+    ],
     imageUrl: 'https://content.jdmagicbox.com/comp/hyderabad/x6/040pxx40.xx40.170220142635.t2x6/catalogue/cinemax-cinemas-attapur-hyderabad-cinema-halls-inggiyi.jpg',
     type: 'Multiplex',
     phone: '+91 22 2632 9090',
@@ -241,7 +290,13 @@ export const theaters: Theater[] = [
     id: 't4',
     name: 'Carnival Cinemas',
     location: 'Borivali, Mumbai',
-    showTimes: ['09:15', '12:45', '16:30', '19:30', '22:45'],
+    showTimes: [
+      { time: '09:15', price: 250, seatsAvailable: true },
+      { time: '12:45', price: 300, seatsAvailable: true },
+      { time: '16:30', price: 300, seatsAvailable: true },
+      { time: '19:30', price: 350, seatsAvailable: true },
+      { time: '22:45', price: 350, seatsAvailable: true }
+    ],
     imageUrl: 'https://content.jdmagicbox.com/comp/delhi/l4/011pxx11.xx11.190325153605.u1l4/catalogue/carnival-cinemas-delhi-4lih2.jpg',
     type: 'Standard Cinema',
     phone: '+91 22 2898 7654',
@@ -252,7 +307,12 @@ export const theaters: Theater[] = [
     id: 't5',
     name: 'Regal Cinema',
     location: 'Colaba, Mumbai',
-    showTimes: ['10:00', '14:00', '18:00', '21:00'],
+    showTimes: [
+      { time: '10:00', price: 250, seatsAvailable: true },
+      { time: '14:00', price: 300, seatsAvailable: true },
+      { time: '18:00', price: 300, seatsAvailable: true },
+      { time: '21:00', price: 350, seatsAvailable: true }
+    ],
     imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Eros_Cinema_Mumbai.jpg',
     type: 'Heritage Cinema',
     phone: '+91 22 2202 1017',

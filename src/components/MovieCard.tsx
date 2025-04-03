@@ -36,7 +36,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, isLarge = false }) => {
           </div>
         </div>
         <div className="flex flex-wrap gap-1">
-          {movie.genre.slice(0, 2).map((genre) => (
+          {movie.genres.slice(0, 2).map((genre) => (
             <span
               key={genre}
               className="text-xs bg-netflix-red bg-opacity-70 px-2 py-0.5 rounded text-white"

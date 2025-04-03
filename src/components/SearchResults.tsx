@@ -50,7 +50,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ results, onClose, query }
                 </span>
               </div>
               <div className="mt-1 flex flex-wrap gap-1">
-                {movie.genre.slice(0, 2).map(g => (
+                {movie.genres.slice(0, 2).map(g => (
                   <span key={g} className="text-xs bg-netflix-red bg-opacity-20 text-netflix-red px-1.5 py-0.5 rounded">
                     {g}
                   </span>

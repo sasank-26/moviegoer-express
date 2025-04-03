@@ -126,7 +126,7 @@ const MovieDetails = () => {
             </div>
             
             <div className="flex flex-wrap gap-2 mb-6">
-              {movie.genre.map(genre => (
+              {movie.genres.map(genre => (
                 <span 
                   key={genre}
                   className="bg-netflix-red bg-opacity-20 text-netflix-red px-3 py-1 rounded-full text-sm"

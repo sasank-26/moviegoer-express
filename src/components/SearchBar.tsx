@@ -29,7 +29,7 @@ const SearchBar = () => {
     if (query.length >= 2) {
       const filtered = movies.filter(movie => 
         movie.title.toLowerCase().includes(query.toLowerCase()) ||
-        movie.genre.some(g => g.toLowerCase().includes(query.toLowerCase())) ||
+        movie.genres.some(g => g.toLowerCase().includes(query.toLowerCase())) ||
         movie.cast.some(c => c.name.toLowerCase().includes(query.toLowerCase()))
       );
       setResults(filtered);

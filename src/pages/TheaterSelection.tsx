@@ -59,14 +59,14 @@ const TheaterSelection = () => {
     }
   };
 
-  const handleShowTimeSelect = (theater: typeof theaters[0], time: string) => {
+  const handleShowTimeSelect = (theater: typeof theaters[0], showTime: { time: string; price: number; seatsAvailable: boolean }) => {
     if (!isAuthenticated) {
       setAuthModalOpen(true);
       return;
     }
     
     setTheater(theater);
-    setShowTime(time);
+    setShowTime(showTime.time);
     navigate(`/seat-booking/${movie.id}`);
   };
   
@@ -96,7 +96,7 @@ const TheaterSelection = () => {
           <div>
             <h1 className="text-2xl md:text-3xl font-bold text-netflix-white">{movie.title}</h1>
             <div className="flex flex-wrap gap-2 mt-2">
-              {movie.genre.map(genre => (
+              {movie.genres.map(genre => (
                 <span 
                   key={genre}
                   className="bg-netflix-light-gray/30 px-3 py-1 rounded-full text-sm text-netflix-white"
@@ -175,28 +175,28 @@ const TheaterSelection = () => {
                   <h3 className="text-lg font-semibold text-netflix-white">{theater.name}</h3>
                   <div className="flex items-center mt-1 text-sm text-netflix-white/70">
                     <MapPin size={14} className="mr-1" />
-                    {theater.location} • {theater.distance} away
+                    {theater.location} • {theater.distance || '5 km'} away
                   </div>
                 </div>
                 
                 <div className="flex flex-wrap gap-3">
-                  {theater.showTimes.map(({ time, price, seatsAvailable }) => (
+                  {theater.showTimes.map((showTime) => (
                     <button
-                      key={time}
+                      key={showTime.time}
                       className={`px-4 py-2 rounded-md border ${
-                        seatsAvailable 
+                        showTime.seatsAvailable 
                           ? 'border-netflix-light-gray hover:border-netflix-red text-netflix-white' 
                           : 'border-netflix-gray text-netflix-white/40 cursor-not-allowed'
                       }`}
-                      disabled={!seatsAvailable}
-                      onClick={() => handleShowTimeSelect(theater, time)}
+                      disabled={!showTime.seatsAvailable}
+                      onClick={() => handleShowTimeSelect(theater, showTime)}
                     >
                       <div className="flex items-center mb-1">
                         <Clock size={14} className="mr-1" />
-                        {time}
+                        {showTime.time}
                       </div>
                       <div className="text-sm text-netflix-white/70">
-                        ₹{price.toFixed(0)}
+                        ₹{showTime.price.toFixed(0)}
                       </div>
                     </button>
                   ))}

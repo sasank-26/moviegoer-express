@@ -71,7 +71,7 @@ const FeaturedSlider: React.FC<FeaturedSliderProps> = ({ movies }) => {
             </div>
             
             <div className="flex flex-wrap gap-2 mb-4">
-              {currentMovie.genre.map((genre) => (
+              {currentMovie.genres.map((genre) => (
                 <span
                   key={genre}
                   className="text-sm bg-netflix-red bg-opacity-80 px-3 py-1 rounded-full text-white"

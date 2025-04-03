@@ -13,12 +13,12 @@ const AllMovies = () => {
   const [activeLanguage, setActiveLanguage] = useState<string | null>(null);
   
   // Extract unique genres and languages
-  const allGenres = Array.from(new Set(movies.flatMap(movie => movie.genre)));
+  const allGenres = Array.from(new Set(movies.flatMap(movie => movie.genres)));
   const allLanguages = Array.from(new Set(movies.map(movie => movie.language)));
   
   // Filter movies based on active filters
   const filteredMovies = movies.filter(movie => {
-    const genreMatch = !activeGenre || movie.genre.includes(activeGenre);
+    const genreMatch = !activeGenre || movie.genres.includes(activeGenre);
     const languageMatch = !activeLanguage || movie.language === activeLanguage;
     return genreMatch && languageMatch;
   });
