@@ -5,18 +5,65 @@ import { Ticket, ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import FeaturedSlider from '@/components/FeaturedSlider';
 import MovieCard from '@/components/MovieCard';
-import { movies } from '@/lib/data';
 import { Button } from '@/components/ui/button';
+import { useSupabaseData } from '@/hooks/useSupabaseData';
+import { SupabaseMovie } from '@/types/supabase';
 
 const Index = () => {
   const navigate = useNavigate();
+  const { data: moviesData, loading } = useSupabaseData<SupabaseMovie>('movies', {
+    limit: 10,
+    order: { column: 'release_date', ascending: false }
+  });
+
+  // Convert Supabase movies to the format expected by the FeaturedSlider
+  const featuredMovies = React.useMemo(() => {
+    return moviesData.slice(0, 3).map(movie => ({
+      id: movie.id,
+      title: movie.title,
+      overview: movie.overview,
+      posterUrl: movie.poster_path,
+      backdropUrl: movie.backdrop_path,
+      rating: movie.rating,
+      runtime: movie.runtime,
+      certificate: movie.certificate,
+      genres: movie.genres || [],
+      language: movie.language
+    }));
+  }, [moviesData]);
+
+  // Format movies for display in grids
+  const formatMovieForCard = (movie: SupabaseMovie) => ({
+    id: movie.id,
+    title: movie.title,
+    posterUrl: movie.poster_path,
+    rating: movie.rating,
+    genres: movie.genres || [],
+    language: movie.language
+  });
+
+  const nowShowing = React.useMemo(() => 
+    moviesData.slice(0, 5).map(formatMovieForCard),
+    [moviesData]
+  );
+  
+  const comingSoon = React.useMemo(() => 
+    moviesData.slice(5, 10).map(formatMovieForCard),
+    [moviesData]
+  );
 
   return (
     <div className="min-h-screen bg-netflix-black text-netflix-white">
       <Navbar />
       
       {/* Featured Slider */}
-      <FeaturedSlider movies={movies} />
+      {loading ? (
+        <div className="h-[60vh] flex items-center justify-center">
+          <p className="text-xl text-netflix-white">Loading featured movies...</p>
+        </div>
+      ) : (
+        <FeaturedSlider movies={featuredMovies} />
+      )}
       
       {/* Now Showing */}
       <section className="container mx-auto px-4 py-10">
@@ -31,11 +78,15 @@ const Index = () => {
           </Button>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {movies.slice(0, 5).map(movie => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </div>
+        {loading ? (
+          <p className="text-center py-8">Loading movies...</p>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {nowShowing.map(movie => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        )}
       </section>
       
       {/* Coming Soon */}
@@ -51,11 +102,15 @@ const Index = () => {
           </Button>
         </div>
         
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          {movies.slice(2, 7).map(movie => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))}
-        </div>
+        {loading ? (
+          <p className="text-center py-8">Loading movies...</p>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {comingSoon.map(movie => (
+              <MovieCard key={movie.id} movie={movie} />
+            ))}
+          </div>
+        )}
       </section>
       
       {/* Book a movie banner */}
