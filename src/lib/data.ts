@@ -1,3 +1,4 @@
+
 import { v4 as uuidv4 } from 'uuid';
 
 export interface Movie {
@@ -107,7 +108,12 @@ export const movies: Movie[] = [
     certificate: 'PG-13',
     genres: ['Action', 'Crime', 'Drama', 'Thriller'],
     director: 'Christopher Nolan',
-    cast: ['Christian Bale', 'Heath Ledger', 'Aaron Eckhart', 'Michael Caine'],
+    cast: [
+      { name: 'Christian Bale', role: 'Bruce Wayne / Batman', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTkxMzk4MjQ4MF5BMl5BanBnXkFtZTcwMzExODQxOA@@._V1_.jpg' },
+      { name: 'Heath Ledger', role: 'Joker', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTI2NTY0NzA4MF5BMl5BanBnXkFtZTYwMjE1MDE0._V1_FMjpg_UX1000_.jpg' },
+      { name: 'Aaron Eckhart', role: 'Harvey Dent', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTc4MTAyNzMzNF5BMl5BanBnXkFtZTcwMzQ5MzQzMg@@._V1_.jpg' },
+      { name: 'Michael Caine', role: 'Alfred', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjAwNzIwNTQ4Ml5BMl5BanBnXkFtZTYwMzE1MTUz._V1_.jpg' }
+    ],
     featured: true
   },
   {
@@ -124,7 +130,11 @@ export const movies: Movie[] = [
     certificate: 'G',
     genres: ['Animation', 'Adventure', 'Drama'],
     director: 'Roger Allers, Rob Minkoff',
-    cast: ['Matthew Broderick', 'Jeremy Irons', 'James Earl Jones'],
+    cast: [
+      { name: 'Matthew Broderick', role: 'Simba (voice)', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTg3ODU2Mzg0NV5BMl5BanBnXkFtZTcwOTU5NzQzMw@@._V1_.jpg' },
+      { name: 'Jeremy Irons', role: 'Scar (voice)', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTY5Mzg2NDY5OV5BMl5BanBnXkFtZTcwMDQwNzA0Mg@@._V1_.jpg' },
+      { name: 'James Earl Jones', role: 'Mufasa (voice)', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTIwNjI2NTQ4Nl5BMl5BanBnXkFtZTcwMzM5MjQzMw@@._V1_.jpg' }
+    ],
     featured: false
   },
   {
@@ -141,7 +151,11 @@ export const movies: Movie[] = [
     certificate: 'PG-13',
     genres: ['Action', 'Adventure', 'Sci-Fi', 'Thriller'],
     director: 'Christopher Nolan',
-    cast: ['Leonardo DiCaprio', 'Joseph Gordon-Levitt', 'Ellen Page'],
+    cast: [
+      { name: 'Leonardo DiCaprio', role: 'Dom Cobb', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjI0MTg3MzI0M15BMl5BanBnXkFtZTcwMzQyODU2Mw@@._V1_.jpg' },
+      { name: 'Joseph Gordon-Levitt', role: 'Arthur', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTY3NTk0NDI3Ml5BMl5BanBnXkFtZTgwNDA3NjY0MjE@._V1_FMjpg_UX1000_.jpg' },
+      { name: 'Ellen Page', role: 'Ariadne', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTU3MzM3MDYzMV5BMl5BanBnXkFtZTcwNzk1Mzc3NA@@._V1_.jpg' }
+    ],
     featured: true
   },
   {
@@ -158,7 +172,11 @@ export const movies: Movie[] = [
     certificate: 'PG-13',
     genres: ['Adventure', 'Drama', 'Sci-Fi'],
     director: 'Christopher Nolan',
-    cast: ['Matthew McConaughey', 'Anne Hathaway', 'Jessica Chastain'],
+    cast: [
+      { name: 'Matthew McConaughey', role: 'Cooper', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTg0MDc3ODUwOV5BMl5BanBnXkFtZTcwMTk2NjY4Nw@@._V1_FMjpg_UX1000_.jpg' },
+      { name: 'Anne Hathaway', role: 'Brand', imageUrl: 'https://m.media-amazon.com/images/M/MV5BNjQ5MTAxMDc5OF5BMl5BanBnXkFtZTcwOTI0OTE4OA@@._V1_.jpg' },
+      { name: 'Jessica Chastain', role: 'Murph (adult)', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTU1MDM5NjczOF5BMl5BanBnXkFtZTcwOTY2MDE4OA@@._V1_.jpg' }
+    ],
     featured: false
   },
   {
@@ -175,7 +193,12 @@ export const movies: Movie[] = [
     certificate: 'PG-13',
     genres: ['Action', 'Drama', 'Historical'],
     director: 'S. S. Rajamouli',
-    cast: ['N.T. Rama Rao Jr.', 'Ram Charan', 'Ajay Devgn', 'Alia Bhatt'],
+    cast: [
+      { name: 'N.T. Rama Rao Jr.', role: 'Komaram Bheem', imageUrl: 'https://m.media-amazon.com/images/M/MV5BZTEzMGRhOWQtMGM4Yi00ZDVmLWIzZjgtZWU4ZGZkNzVjOWJhXkEyXkFqcGdeQXVyNDY5MTUyNjU@._V1_.jpg' },
+      { name: 'Ram Charan', role: 'Alluri Sitarama Raju', imageUrl: 'https://m.media-amazon.com/images/M/MV5BZWQzZmRiYjYtYTc0MC00MDIyLWI1MzItZGFiYzBlOThmOTVkXkEyXkFqcGdeQXVyNDY5MTUyNjU@._V1_FMjpg_UX1000_.jpg' },
+      { name: 'Ajay Devgn', role: 'Venkata Rama Raju', imageUrl: 'https://m.media-amazon.com/images/M/MV5BNTYxM2MxMTAtNTU1MS00NzgxLWJmNWItMTk5Y2M2NjU2NGRkXkEyXkFqcGdeQXVyNDUzOTQ5MjY@._V1_.jpg' },
+      { name: 'Alia Bhatt', role: 'Sita', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjFkZjZhM2YtZjBlZS00YzYxLTkzNmItMGFkOWUxZTE2OTU4XkEyXkFqcGdeQXVyNDUzOTQ5MjY@._V1_.jpg' }
+    ],
     featured: true
   },
   {
@@ -192,7 +215,12 @@ export const movies: Movie[] = [
     certificate: 'PG-13',
     genres: ['Action', 'Adventure', 'Drama', 'Sci-Fi'],
     director: 'Denis Villeneuve',
-    cast: ['Timothée Chalamet', 'Rebecca Ferguson', 'Oscar Isaac', 'Zendaya'],
+    cast: [
+      { name: 'Timothée Chalamet', role: 'Paul Atreides', imageUrl: 'https://m.media-amazon.com/images/M/MV5BOWU1Nzg0M2ItYjEzMi00ODliLThkODAtNGEyYzRkZTBmMmEzXkEyXkFqcGdeQXVyNDk2Mzk2NDg@._V1_.jpg' },
+      { name: 'Rebecca Ferguson', role: 'Lady Jessica', imageUrl: 'https://m.media-amazon.com/images/M/MV5BNzA4NDA1MTA5NV5BMl5BanBnXkFtZTcwNjMyNTQ3OA@@._V1_.jpg' },
+      { name: 'Oscar Isaac', role: 'Duke Leto Atreides', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMTQ0ODE1NzU3NV5BMl5BanBnXkFtZTcwNzM2MjU1MQ@@._V1_.jpg' },
+      { name: 'Zendaya', role: 'Chani', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjAxZTk4NDAtYjI3Mi00OTk3LTg0NDEtNWFlNzE5NDM5MWM1XkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1000_.jpg' }
+    ],
     featured: true
   },
   {
@@ -209,7 +237,11 @@ export const movies: Movie[] = [
     certificate: 'R',
     genres: ['Comedy', 'Drama', 'Thriller'],
     director: 'Bong Joon Ho',
-    cast: ['Song Kang-ho', 'Lee Sun-kyun', 'Cho Yeo-jeong'],
+    cast: [
+      { name: 'Song Kang-ho', role: 'Kim Ki-taek', imageUrl: 'https://m.media-amazon.com/images/M/MV5BYmE2NDNmMTMtZTQzYy00ZWU4LTliMzEtNzk0NjU4MmU5YmY4XkEyXkFqcGdeQXVyMzQ2MTQyOA@@._V1_.jpg' },
+      { name: 'Lee Sun-kyun', role: 'Park Dong-ik', imageUrl: 'https://m.media-amazon.com/images/M/MV5BNWY4NzQ2NzItYTc0Zi00N2IwLWJkYzQtZTUxMDRkYzIwMzQ5XkEyXkFqcGdeQXVyNTI5NjIyMw@@._V1_.jpg' },
+      { name: 'Cho Yeo-jeong', role: 'Park Yeon-kyo', imageUrl: 'https://m.media-amazon.com/images/M/MV5BNjI1MTgwNTQ0Ml5BMl5BanBnXkFtZTgwODUwODkzNTE@._V1_.jpg' }
+    ],
     featured: false
   },
   {
@@ -226,7 +258,11 @@ export const movies: Movie[] = [
     certificate: 'PG-13',
     genres: ['Action', 'Drama'],
     director: 'Joseph Kosinski',
-    cast: ['Tom Cruise', 'Jennifer Connelly', 'Miles Teller'],
+    cast: [
+      { name: 'Tom Cruise', role: 'Capt. Pete Mitchell', imageUrl: 'https://m.media-amazon.com/images/M/MV5BYTFlOTdjMjgtNmY0ZC00MDgxLThjNmEtZGIxZTQyZDdkMTRjXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_FMjpg_UX1000_.jpg' },
+      { name: 'Jennifer Connelly', role: 'Penny Benjamin', imageUrl: 'https://m.media-amazon.com/images/M/MV5BOTczNTgzODYyMF5BMl5BanBnXkFtZTcwNjk4ODk4Mw@@._V1_.jpg' },
+      { name: 'Miles Teller', role: 'Lt. Bradley Bradshaw', imageUrl: 'https://m.media-amazon.com/images/M/MV5BMjExOTY3NzExM15BMl5BanBnXkFtZTgwOTM5ODczOTE@._V1_FMjpg_UX1000_.jpg' }
+    ],
     featured: true
   }
 ];
