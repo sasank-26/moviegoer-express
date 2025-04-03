@@ -65,11 +65,18 @@ const MovieForm: React.FC<MovieFormProps> = ({ movie, onSuccess }) => {
       return;
     }
 
-    const movieData = {
-      ...data,
+    // Ensure all required properties are present by casting with definite values
+    const movieData: Omit<SupabaseMovie, 'id'> = {
+      title: data.title,
+      overview: data.overview,
+      release_date: data.release_date,
+      rating: data.rating,
+      runtime: data.runtime,
+      language: data.language,
+      certificate: data.certificate || '',
       poster_path: posterUrl,
       backdrop_path: backdropUrl || posterUrl,
-      genres,
+      genres: genres,
     };
 
     try {

@@ -128,9 +128,15 @@ const AdminTheaters = () => {
 
   const onSubmit = async (data: TheaterFormData) => {
     try {
-      const theaterData = {
-        ...data,
+      // Ensure all required properties are present by explicitly defining them
+      const theaterData: Omit<SupabaseTheater, 'id'> = {
+        name: data.name,
+        location: data.location,
         image_url: imageUrl,
+        type: data.type || '',
+        rating: data.rating || 0,
+        reviews: data.reviews || 0,
+        phone: data.phone || '',
       };
 
       if (selectedTheater) {
