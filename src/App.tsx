@@ -20,6 +20,11 @@ import AllMovies from "./pages/AllMovies";
 import AllTheaters from "./pages/AllTheaters";
 import TheaterDetails from "./pages/TheaterDetails";
 
+// Admin Pages
+import AdminDashboard from "./pages/AdminDashboard";
+import AdminMovies from "./pages/AdminMovies";
+import AdminTheaters from "./pages/AdminTheaters";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -41,6 +46,12 @@ const App = () => (
               <Route path="/movies" element={<AllMovies />} />
               <Route path="/theaters" element={<AllTheaters />} />
               <Route path="/theaters/:id" element={<TheaterDetails />} />
+              
+              {/* Admin Routes */}
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/movies" element={<AdminMovies />} />
+              <Route path="/admin/theaters" element={<AdminTheaters />} />
+              
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
