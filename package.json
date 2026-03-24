@@ -8,7 +8,10 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server:install": "cd server && npm install",
+    "server:start": "cd server && node index.js",
+    "server:dev": "cd server && npx nodemon index.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
